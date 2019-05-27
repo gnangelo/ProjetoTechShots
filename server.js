@@ -21,7 +21,7 @@ app.listen(port, () => {
 app.get('/', (req, res) => {
     res.render('pages/home')
 })
-app.get('/cadastrarUsuarios', (req, res) => {
+app.get('/cadastrarUsuarios', (req, res) => {   
     res.render('pages/cadastrarUsuarios')
 })
 app.get('/criarTechShots', (req, res) => {
@@ -57,7 +57,6 @@ function execSQLQuery(sqlQry, res) {
 
 app.get('/usuarios', (req, res) => {
     execSQLQuery('SELECT * FROM Usuarios', res);
-
 });
 
 //endpoint usuarios
@@ -107,9 +106,29 @@ app.patch('/usuarios/:id', (req, res) => {
 });
 
 //endpoint techshots
+// getUsuarios(app) {
+//     axios.get(`\techshots`)
+//       .then(response => {
+//         const techshot = response.data;
+//         let options = [];
+//         let i = 0;
+//         // mapear usuarios em options
+//         techshot.map(
+//           // eslint-disable-next-line
+//           techshot => {
+//             options[i] = { value: techshot.id, label: techshot.titulo };
+//             i++;
+//           }
+//         )
+
+//         this.setState({ options });
+//     });
+// };
 
 app.get('/techshots', (req, res) => {
+    var techshots = req.body;
     execSQLQuery('SELECT * FROM Techshots', res);
+    
 });
 
 app.get('/techshots/:id?', (req, res) => {
@@ -131,18 +150,22 @@ app.post('/techshots', (req, res) => {
 
     // const titulo = req.body.titulo.substring(0, 150);
     // const descricao = req.body.descricao.substring(0, 300);
-    execSQLQuery(`INSERT INTO Techshots(Titulo, Descricao) VALUES(
+    execSQLQuery(`INSERT INTO Techshots(Titulo, Descricao, Palestrante) VALUES(
         '${techshots['titulo']}',
-        '${techshots['descricao']}')`, res);
+        '${techshots['descricao']}',
+        '${techshots['palestrante']}')`, res);
 });
 
 app.patch('/techshots/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    const titulo = req.body.titulo.substring(0, 150);
-    const descricao = req.body.descricao.substring(0, 300);
+    var techshots = req.body;
+    // const id = parseInt(req.params.id);
+    // const titulo = req.body.titulo.substring(0, 150);
+    // const descricao = req.body.descricao.substring(0, 300);
+    // const palestrante = req.body.palestrante.substring(0, 20);
     execSQLQuery(`UPDATE Techshots SET 
         Titulo='${techshots['titulo']}', 
-        Descricao='${techshots['descricao']}' 
+        Descricao='${techshots['descricao']}',
+        Palestrante='${techshots['palestrante']}') 
         WHERE ID=${techshots['id']}`, res);
 });
 
